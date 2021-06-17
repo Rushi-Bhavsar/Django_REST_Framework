@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'first_drf_project.settings')
 import django
 
 django.setup()
-from first_drf_get_api.models import StudentModel
+from drf_create_api.models import StudentModel
 from faker import Faker
 
 

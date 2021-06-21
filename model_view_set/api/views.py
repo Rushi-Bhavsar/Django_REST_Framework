@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 class EmployeeAPI(ModelViewSet):
     serializer_class = EmployeeModelSerializer
-    queryset = EmployeeModel
+    queryset = EmployeeModel.objects.all()
 
 # class EmployeeAPI(ReadOnlyModelViewSet):
 #     queryset = EmployeeModel.objects.all()

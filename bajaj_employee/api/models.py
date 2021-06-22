@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import time
 
 
 class EmployeeModel(models.Model):
@@ -22,5 +21,5 @@ class EmployeeLoginModel(models.Model):
 
 class EmployeeDetailsModel(models.Model):
     emp_name = models.CharField(max_length=100)
-    emp_id = models.IntegerField(primary_key=True)
-    working_hours = models.TimeField()
+    emp_id = models.IntegerField()
+    working_hours = models.CharField(max_length=50)

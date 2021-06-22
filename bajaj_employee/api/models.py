@@ -8,14 +8,19 @@ class EmployeeModel(models.Model):
     city = models.CharField(max_length=40)
 
     def __str__(self):
-        return f"{self.emp_id}"
+        return f"{self.emp_id}, {self.name}, {self.city}"
 
 
-class EmployeePunchInModel(models.Model):
+class EmployeeLoginModel(models.Model):
     punch_in = models.TimeField()
-    emp_id = models.ForeignKey(EmployeeModel, on_delete=models.CASCADE)
-
-
-class EmployeePunchOutModel(models.Model):
     punch_out = models.TimeField()
-    emp_id = models.ForeignKey(EmployeeModel, on_delete=models.CASCADE)
+    employee = models.ForeignKey(EmployeeModel, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.employee}, {self.punch_in}, {self.punch_out}"
+
+
+class EmployeeDetailsModel(models.Model):
+    emp_name = models.CharField(max_length=100)
+    emp_id = models.IntegerField(primary_key=True)
+    working_hours = models.TimeField()

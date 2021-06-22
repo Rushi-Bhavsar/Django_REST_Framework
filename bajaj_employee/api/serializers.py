@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import EmployeeModel, EmployeePunchInModel, EmployeePunchOutModel
+from .models import EmployeeModel, EmployeeLoginModel, EmployeeDetailsModel
 
 
 class EmployeeModelSerializer(serializers.ModelSerializer):
@@ -8,23 +8,21 @@ class EmployeeModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EmployeePunchInModelSerializer(serializers.ModelSerializer):
+class EmployeeLoginSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmployeePunchInModel
+        model = EmployeeLoginModel
         fields = '__all__'
 
-    def validate_punch_in(self, time_data):
-        if 10 > time_data.hour < 19:
-            raise serializers.ValidationError('Punch In Time should be between 10:00AM and 20:00PM')
+    def validate(self, time_data):
+        pin = time_data.get('punch_in')
+        pout = time_data.get('punch_out')
+        if 10 > pin.hour < 19 and 10 > pout.hour < 19:
+            raise serializers.ValidationError('Punch In and Punch Out Time should be between 10:00AM and 20:00PM')
         return time_data
 
 
-class EmployeePunchOutModelSerializer(serializers.ModelSerializer):
+class EmployeeDetailsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmployeePunchOutModel
+        model = EmployeeDetailsModel
         fields = '__all__'
 
-    def validate_punch_out(self, time_data):
-        if 10 > time_data.hour < 19:
-            raise serializers.ValidationError('Punch Out Time should be between 10:00AM and 20:00PM')
-        return time_data

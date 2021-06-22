@@ -5,8 +5,8 @@ from api import views
 
 router = DefaultRouter()
 router.register('employee', views.EmployeeAPI)
-router.register('employee_punch_in', views.EmployeePunchInAPI)
-router.register('employee_punch_out', views.EmployeePunchOutAPI)
+router.register('employee_login', views.EmployeeLoginAPI)
+router.register('employee_details', views.EmployeeDetailsAPI)
 
 
 urlpatterns = [

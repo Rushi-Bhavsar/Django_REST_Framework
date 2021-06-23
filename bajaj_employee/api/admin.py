@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmployeeModel, EmployeeLoginModel, EmployeeDetailsModel
+from .models import EmployeeModel, EmployeeLoginModel
 
 
 @admin.register(EmployeeModel)
@@ -10,8 +10,3 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(EmployeeLoginModel)
 class EmployeeLoginAdmin(admin.ModelAdmin):
     list_display = ['id', 'punch_in', 'punch_out', 'employee']
-
-
-@admin.register(EmployeeDetailsModel)
-class EmployeeDetailAdmin(admin.ModelAdmin):
-    list_display = ['emp_name', 'emp_id', 'working_hours']

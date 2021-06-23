@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import EmployeeModel, EmployeeLoginModel, EmployeeDetailsModel
+from .models import EmployeeModel, EmployeeLoginModel
 
 
 class EmployeeModelSerializer(serializers.ModelSerializer):
@@ -13,16 +13,12 @@ class EmployeeLoginSerializer(serializers.ModelSerializer):
         model = EmployeeLoginModel
         fields = '__all__'
 
-    def validate(self, time_data):
-        pin = time_data.get('punch_in')
-        pout = time_data.get('punch_out')
-        if 10 > pin.hour < 19 and 10 > pout.hour < 19:
-            raise serializers.ValidationError('Punch In and Punch Out Time should be between 10:00AM and 20:00PM')
-        return time_data
+    def validate_punch_in(self, value):
+        if 10 > value.hour < 19:
+            raise serializers.ValidationError('Punch In Time should be between 10:00AM and 20:00PM')
+        return value
 
-
-class EmployeeDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmployeeDetailsModel
-        fields = '__all__'
-
+    def validate_punch_out(self, value):
+        if 10 > value.hour < 19:
+            raise serializers.ValidationError('Punch Out Time should be between 10:00AM and 20:00PM')
+        return value

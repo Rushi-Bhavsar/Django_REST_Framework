@@ -7,7 +7,7 @@ class EmployeeModel(models.Model):
     city = models.CharField(max_length=40)
 
     def __str__(self):
-        return f"{self.emp_id}, {self.name}, {self.city}"
+        return f"{self.emp_id}"
 
 
 class EmployeeLoginModel(models.Model):
@@ -16,10 +16,4 @@ class EmployeeLoginModel(models.Model):
     employee = models.ForeignKey(EmployeeModel, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.employee}, {self.punch_in}, {self.punch_out}"
-
-
-class EmployeeDetailsModel(models.Model):
-    emp_name = models.CharField(max_length=100)
-    emp_id = models.IntegerField()
-    working_hours = models.CharField(max_length=50)
+        return f"{self.employee}"

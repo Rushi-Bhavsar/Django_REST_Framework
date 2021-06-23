@@ -1,7 +1,10 @@
 import datetime
-from .models import EmployeeModel, EmployeeLoginModel, EmployeeDetailsModel
-from .serializers import EmployeeModelSerializer, EmployeeLoginSerializer, EmployeeDetailsSerializer
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from .models import EmployeeModel, EmployeeLoginModel
+from .serializers import EmployeeModelSerializer, EmployeeLoginSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class EmployeeAPI(ModelViewSet):
@@ -9,9 +12,45 @@ class EmployeeAPI(ModelViewSet):
     queryset = EmployeeModel.objects.all()
 
 
-class EmployeeLoginAPI(ModelViewSet):
-    serializer_class = EmployeeLoginSerializer
-    queryset = EmployeeLoginModel.objects.all()
+class EmployeeLoginAPI(APIView):
+
+    def get(self, request):
+        emp_id = request.data.get('employee')
+        if emp_id is not None:
+            emp_model_obj = EmployeeLoginModel.objects.filter(employee=emp_id)
+            emp_serializer_obj = EmployeeLoginSerializer(emp_model_obj, many=True)
+            return Response(emp_serializer_obj.data, status=status.HTTP_200_OK)
+        emp_model_obj = EmployeeLoginModel.objects.all()
+        emp_serializer_obj = EmployeeLoginSerializer(emp_model_obj, many=True)
+        return Response(emp_serializer_obj.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        emp_model_serializer_object = EmployeeLoginSerializer(data=request.data)
+        if emp_model_serializer_object.is_valid():
+            emp_model_serializer_object.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(emp_model_serializer_object.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        pk = request.data.get('id')
+        if pk is not None:
+            emp_model_object = EmployeeLoginModel.objects.get(id=pk)
+            emp_model_serializer_obj = EmployeeLoginSerializer(emp_model_object, data=request.data, partial=True)
+            if emp_model_serializer_obj.is_valid():
+                emp_model_serializer_obj.save()
+                return Response({'msg': f'Record Updated for Primary key {pk}'}, status=status.HTTP_202_ACCEPTED)
+            return Response(emp_model_serializer_obj.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        pk = request.data.get('id')
+        if pk is not None:
+            print(pk)
+            emp_model_object = EmployeeLoginModel.objects.get(id=pk)
+            print(emp_model_object)
+            emp_model_object.delete()
+            return Response({'msg': f'Record {pk} deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def data():
@@ -27,15 +66,13 @@ def data():
     return emp_detail_list
 
 
-def populate_data(emp_details_list):
-    for item in emp_details_list:
-        EmployeeDetailsModel.objects.get_or_create(emp_name=item['name'],
-                                                   emp_id=item['emp_id'],
-                                                   working_hours=item['working_hour'])
+class EmployeeDetailsAPI(APIView):
 
-
-class EmployeeDetailsAPI(ReadOnlyModelViewSet):
-    populate_data(data())
-    lookup_field = 'emp_id'
-    queryset = EmployeeDetailsModel.objects.all()
-    serializer_class = EmployeeDetailsSerializer
+    def get(self, request):
+        emp_id = request.data.get('emp_id')
+        emp_list = data()
+        if emp_id is not None:
+            for emp in emp_list:
+                if emp.get('emp_id') == emp_id:
+                    return Response(emp)
+        return Response(emp_list)

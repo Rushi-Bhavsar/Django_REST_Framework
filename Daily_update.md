@@ -37,3 +37,29 @@
 	- ModelViewSet.
 	- ReadOnlyModelViewSet.
 
+### Day - 4
+- Authentication.
+	- Basic.
+	  - Using username and password.
+	- Session.
+	  - Creating session and using session ID.
+	- Token.
+		- Creating Token.
+- Permission.
+	- AllowAny.
+  	- IsAuthenticated.
+  	- IsAdminUser.
+  	- IsAuthenticatedOrReadOnly.
+  	- DjangoModelPermissions.
+  	- DjangoModelPermissionsOrAnonReadOnly.
+  	- DjangoObjectPermissions.
+  	- Custom permissions. 	
+
+- Different methods to generate token.
+	- Using admin portal.
+	- Using drf_create_token command.
+	- Using API endpoint.
+	  	- using obtain_auth_token view.
+		- inheriting ObtainAuthToken class(custom).
+	- Using Signals.
+- Custom Authentication.
